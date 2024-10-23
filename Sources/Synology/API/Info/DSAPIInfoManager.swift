@@ -5,8 +5,8 @@ public class DSAPIInfoManager {
         self.session = session
     }
 
-    public func query(names: Set<String> = []) throws -> [String: DSAPIInfo] {
-        try session.performRequest(
+    public func query(names: Set<String> = []) async throws -> [String: DSAPIInfo] {
+        try await session.performRequest(
             path: "entry.cgi",
             apiName: "SYNO.API.Info",
             version: 1,

@@ -5,8 +5,8 @@ public class DSAPIAuthManager {
         self.session = session
     }
 
-    public func login(account: String, password: String) throws {
-        let payload: Payload = try session.performRequest(
+    public func login(account: String, password: String) async throws {
+        let payload: Payload = try await session.performRequest(
             apiName: "SYNO.API.Auth",
             version: 3,
             methodName: "login",

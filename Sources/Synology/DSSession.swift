@@ -3,15 +3,22 @@ import Foundation
 public class DSSession {
     public let url: URL
     var sessionID: String?
+    private let urlSession: URLSession
     private var apiInfoByName: [String: DSAPIInfo]?
 
-    public init(secure: Bool, host: String, port: Int? = nil) throws {
+    public init(
+        secure: Bool = true,
+        host: String,
+        port: Int? = nil,
+        urlSession: URLSession = .shared
+    ) async throws {
         var components = URLComponents()
         components.scheme = secure ? "https" : "http"
         components.host = host
         components.port =  port ?? (secure ? 5001 : 5000)
         components.path = "/webapi/"
         self.url = components.url!
+        self.urlSession = urlSession
     }
 
     public lazy var api = DSAPIManager(self)
@@ -23,14 +30,14 @@ public class DSSession {
         version: Int,
         methodName: String,
         parameters: [String: String]
-    ) throws -> Payload {
+    ) async throws -> Payload {
         var url = url
 
         if let path {
             url.append(path: path)
         } else {
             if case .none = apiInfoByName {
-                self.apiInfoByName = try api.info.query()
+                self.apiInfoByName = try await api.info.query()
             }
 
             guard let apiInfo = apiInfoByName![apiName]
@@ -56,7 +63,7 @@ public class DSSession {
             ])
         }
 
-        let data = try Data(contentsOf: url)
+        let (data, _) = try await urlSession.data(from: url)
         return try JSONDecoder().decode(DSResponse.self, from: data).get()
     }
 }

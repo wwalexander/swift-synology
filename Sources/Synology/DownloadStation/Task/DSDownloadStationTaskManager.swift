@@ -17,12 +17,12 @@ public class DSDownloadStationTaskManager {
             \.trackers,
             \.peers
         ]
-    ) throws -> [Task] {
+    ) async throws -> [Task] {
         struct Payload: Decodable {
             let tasks: [Task]
         }
 
-        let payload: Payload = try session.performRequest(
+        let payload: Payload = try await session.performRequest(
             apiName: "SYNO.DownloadStation.Task",
             version: 1,
             methodName: "list",
