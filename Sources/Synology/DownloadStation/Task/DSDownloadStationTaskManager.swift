@@ -10,7 +10,13 @@ public class DSDownloadStationTaskManager {
     public func list(
         offset: Int = 0,
         limit: Int? = nil,
-        additional: Set<PartialKeyPath<Task.Additional>> = []
+        additional: Set<PartialKeyPath<Task.Additional>> = [
+            \.detail,
+            \.transfer,
+            \.files,
+            \.trackers,
+            \.peers
+        ]
     ) throws -> [Task] {
         struct Payload: Decodable {
             let tasks: [Task]
