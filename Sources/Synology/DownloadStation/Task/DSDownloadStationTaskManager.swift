@@ -10,7 +10,7 @@ public class DSDownloadStationTaskManager {
     public func list(
         offset: Int = 0,
         limit: Int? = nil,
-        additional: Set<PartialKeyPath<Task.Additional>> = [
+        additional: Set<PartialKeyPath<Task.Additional>>? = [
             \.detail,
             \.transfer,
             \.files,
@@ -29,7 +29,7 @@ public class DSDownloadStationTaskManager {
             parameters: [
                 "offset": "\(offset)",
                 "limit": "\(limit ?? -1)",
-                "additional": additional.compactMap { keyPath in
+                "additional": additional?.compactMap { keyPath in
                     switch keyPath {
                     case \.detail: "detail"
                     case \.transfer: "transfer"
@@ -38,7 +38,7 @@ public class DSDownloadStationTaskManager {
                     case \.peers: "peer"
                     default: nil
                     }
-                }.joined(separator: ","),
+                }.joined(separator: ",") ?? "",
             ]
         )
 
