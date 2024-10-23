@@ -7,15 +7,15 @@ public class DSSession {
     private var apiInfoByName: [String: DSAPIInfo]?
 
     public init(
-        secure: Bool = true,
+        insecure: Bool = false,
         host: String,
         port: Int? = nil,
         urlSession: URLSession = .shared
     ) async throws {
         var components = URLComponents()
-        components.scheme = secure ? "https" : "http"
+        components.scheme = insecure ? "http" : "https"
         components.host = host
-        components.port =  port ?? (secure ? 5001 : 5000)
+        components.port =  port ?? (insecure ? 5001 : 5000)
         components.path = "/webapi/"
         self.url = components.url!
         self.urlSession = urlSession
