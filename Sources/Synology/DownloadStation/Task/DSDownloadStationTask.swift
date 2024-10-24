@@ -11,5 +11,5 @@ public struct DSDownloadStationTask: Identifiable, Decodable {
     public let size: Int
     public let status: Status
     public let statusExtra: StatusExtra?
-    public let additional: Additional
+    public let additional: Additional?
 }
